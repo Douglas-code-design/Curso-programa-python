@@ -1,0 +1,178 @@
+Fundamentos Teóricos
+1. Lógica em Python: A Tomada de Decisão (if, elif, else)
+ Conceito: Na programação, assim como na vida, precisamos tomar decisões. "Se (if) estiver
+chovendo, eu levo um guarda-chuva. Senão (else), eu levo óculos de sol."
+ Sintaxe:
+o Usamos operadores de comparação para fazer perguntas: == (é igual a?), != (é diferente de?),
+> (maior que?), < (menor que?).
+o O bloco if só é executado se a condição for True.
+o O bloco else é o que acontece se a condição for False.
+o O bloco elif (else if) nos permite testar outra condição.
+
+ Exemplo Conceitual:
+nota = 8.5
+if nota >= 7.0:
+print("Aluno Aprovado!")
+else:
+print("Aluno Reprovado.")
+2. Lógica no Pandas: A Peneira de Dados (Filtros)
+ Conceito: E se pudéssemos fazer uma pergunta para toda uma coluna de uma vez?
+ Série Booleana: Quando você faz uma pergunta a uma coluna do Pandas (ex: df['nota_final'] >
+7.0), ele não te devolve as notas. Ele te devolve uma "lista" de True (Verdadeiro) ou False (Falso)
+para cada linha.
+ A "Peneira Mágica": Se você colocar essa lista de True/False dentro dos colchetes do DataFrame
+(ex: df[...lista_de_true_false...]), o Pandas magicamente te devolve apenas as linhas onde a
+resposta foi True. Isso é chamado de Boolean Indexing.
+ Combinando Perguntas:
+o & (E): Para duas condições que devem ser verdadeiras (ex: nota > 7 E faltas < 3).
+o | (OU): Para quando pelo menos uma condição deve ser verdadeira (ex: produto == 'Café'
+OU produto == 'Leite').
+
+# =============================================================================
+# AULA 5 - CÓDIGO 1: LÓGICA CONDICIONAL EM PYTHON PURO
+# =============================================================================
+import pandas as pd
+print("--- Demonstração de if/else ---")
+valor_venda = 15.0
+if valor_venda > 10.0:
+print("Esta é uma venda de alto valor.")
+elif valor_venda > 5.0:
+print("Esta é uma venda de valor médio.")
+else:
+print("Esta é uma venda de baixo valor.")
+# Operador '==' para texto (String)
+produto = "Café"
+if produto == "Café":
+print("\nÉ uma venda de Café!")
+# Operador '!=' (diferente)
+if produto != "Leite":
+print("Esta venda NÃO é de Leite.")
+print("\n" + "="*50 + "\n")
+
+# =============================================================================
+# AULA 5 - CÓDIGO 2: FILTROS NO PANDAS
+# =============================================================================
+import pandas as pd
+# Criamos nossos dados de vendas diretamente em um DataFrame.
+# Esta é a nossa fonte de dados para esta aula.
+df_vendas = pd.DataFrame({
+'produto': ['Café', 'Açúcar', 'Leite', 'Pão', 'Manteiga', 'Café', 'Leite', 'Pão', 'Açúcar', 'Café'],
+'valor_venda': [5.50, 4.20, 8.00, 6.50, 12.00, 5.50, 8.50, 7.00, 4.00, 6.00],
+'comissao_vendedor': [0.55, 0.42, 0.80, 0.65, 1.20, 0.55, 0.85, 0.70, 0.40, 0.60]
+})
+print("--- Nossos Dados de Vendas ---")
+print(df_vendas)
+print("\n" + "-"*50 + "\n")
+
+# --- Filtro Simples: Perguntando aos Dados ---
+print("--- Passo 1: A Pergunta (Série Booleana) ---")
+# Pergunta: Quais linhas têm 'valor_venda' maior que 7.0?
+condicao = df_vendas['valor_venda'] > 7.0
+print(condicao)
+print("\n--- Passo 2: A Peneira (Aplicando o Filtro) ---")
+# Agora, passamos essa "peneira" (condicao) para o DataFrame
+vendas_altas = df_vendas[condicao]
+print(vendas_altas)
+# (Você pode fazer isso em uma linha: df_vendas[df_vendas['valor_venda'] > 7.0])
+
+# --- Filtro de Texto (Igualdade) ---
+print("\n--- Filtro 2: Apenas Vendas de 'Café' ---")
+# Pergunta: Quais linhas têm o produto IGUAL a 'Café'?
+filtro_cafe = df_vendas['produto'] == 'Café'
+print(df_vendas[filtro_cafe])
+
+# --- Filtro Composto ( & = "E") ---
+# Pergunta: Quais vendas foram de 'Leite' E tiveram valor acima de 8.0?
+print("\n--- Filtro 3: 'Leite' E valor > 8.0 ---")
+condicao1 = df_vendas['produto'] == 'Leite'
+condicao2 = df_vendas['valor_venda'] > 8.0
+# (Note os parênteses obrigatórios ao redor de cada condição!)
+vendas_leite_caro = df_vendas[condicao1 & condicao2]
+print(vendas_leite_caro)
+# --- Filtro Composto ( | = "OU") ---
+# Pergunta: Quais vendas foram de 'Manteiga' OU 'Pão'?
+print("\n--- Filtro 4: 'Manteiga' OU 'Pão' ---")
+condicao_pao = df_vendas['produto'] == 'Pão'
+condicao_manteiga = df_vendas['produto'] == 'Manteiga'
+vendas_padaria = df_vendas[condicao_pao | condicao_manteiga]
+print(vendas_padaria)
+
+3. Lógica em Python: O Laço de Repetição (for)
+ Conceito: E se quisermos fazer a mesma ação para vários itens em uma lista? Em vez de escrever
+print(item1), print(item2), etc., usamos um laço.
+ Analogia: "Para (for) cada aluno na lista de chamada, verifique a nota."
+ Sintaxe: for <variavel_temporaria> in <lista_ou_sequencia>:
+
+ Exemplo Conceitual:
+produtos = ['Café', 'Leite', 'Pão']
+for produto in produtos:
+print(f"Verificando o estoque de: {produto}")
+
+4. Lógica no Pandas: A Análise em Grupo (.groupby())
+ Conceito: Esta é uma das ferramentas mais poderosas do Pandas. Ela responde perguntas como:
+"Qual a média de notas POR TURMA?" ou "Qual o total de vendas POR PRODUTO?".
+ A Analogia "Split-Apply-Combine" (Separar-Aplicar-Combinar):
+1. Split (Separar): O Pandas primeiro "separa" seu DataFrame em subgrupos com base na
+coluna que você escolheu (ex: um grupinho só para 'Café', outro só para 'Leite').
+2. Apply (Aplicar): Em seguida, ele "aplica" a função que você pediu (ex: .mean(), .sum(),
+.count()) a cada um desses grupinhos.
+3. Combine (Combinar): Finalmente, ele "combina" os resultados de cada grupinho em uma
+nova tabela de resumo.
+
+# =============================================================================
+# AULA 5 - CÓDIGO 1: LAÇO DE REPETIÇÃO FOR
+# =============================================================================
+import pandas as pd
+print("--- Demonstração do Laço 'for' ---")
+lista_de_produtos = ['Café', 'Açúcar', 'Leite', 'Pão']
+# 'item' é uma variável temporária que assume o valor de cada item da lista,
+# um de cada vez, a cada "volta" do laço.
+for item in lista_de_produtos:
+print(f"Processando o produto: {item}")
+print("\n--- Laço 'for' com números ---")
+# range(1, 6) cria uma sequência de números de 1 a 5
+for numero in range(1, 6):
+print(f"O número da vez é: {numero}")
+print("\n" + "="*50 + "\n")
+
+# =============================================================================
+# AULA 5 - CÓDIGO 2: AGRUPAMENTOS COM .groupby()
+# =============================================================================
+import pandas as pd
+# Criamos nossos dados de vendas diretamente em um DataFrame.
+# Esta é a nossa fonte de dados para esta aula.
+df_vendas = pd.DataFrame({
+'produto': ['Café', 'Açúcar', 'Leite', 'Pão', 'Manteiga', 'Café', 'Leite', 'Pão', 'Açúcar', 'Café'],
+'valor_venda': [5.50, 4.20, 8.00, 6.50, 12.00, 5.50, 8.50, 7.00, 4.00, 6.00],
+'comissao_vendedor': [0.55, 0.42, 0.80, 0.65, 1.20, 0.55, 0.85, 0.70, 0.40, 0.60]
+})
+print("--- Nossos Dados de Vendas ---")
+print(df_vendas)
+print("\n" + "-"*50 + "\n")
+# --- Pergunta 1: Qual o TOTAL vendido de CADA PRODUTO? ---
+# 1. Agrupar por 'produto'
+# 2. Selecionar a coluna 'valor_venda'
+# 3. Aplicar a função .sum()
+print("--- Total de Vendas (R$) por Produto ---")
+total_por_produto = df_vendas.groupby('produto')['valor_venda'].sum()
+print(total_por_produto)
+# --- Pergunta 2: Qual a MÉDIA de comissão paga por CADA PRODUTO? ---
+print("\n--- Média de Comissão por Produto ---")
+media_comissao_produto = df_vendas.groupby('produto')['comissao_vendedor'].mean()
+print(media_comissao_produto)
+
+# --- Pergunta 3: Quantas vendas (CONTAGEM) fizemos de cada produto? ---
+print("\n--- Contagem de Vendas por Produto ---")
+# .count() conta o número de linhas em cada grupo.
+contagem_por_produto = df_vendas.groupby('produto')['produto'].count()
+# Também podemos usar .size()
+# contagem_por_produto = df_vendas.groupby('produto').size()
+print(contagem_por_produto)
+
+# --- Pergunta 4: Resumo completo por produto (Múltiplas Funções) ---
+# E se quisermos a Soma, a Média e a Contagem de uma vez? Usamos .agg()
+print("\n--- Resumo Agregado por Produto (Soma, Média, Contagem) ---")
+resumo_agregado = df_vendas.groupby('produto')['valor_venda'].agg(['sum', 'mean', 'count'])
+# Vamos renomear as colunas para ficar mais claro
+resumo_agregado.columns = ['Total Vendido', 'Média por Venda', 'No de Vendas']
+print(resumo_agregado)

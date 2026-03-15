@@ -1,0 +1,208 @@
+A Forma Fácil: Usando os Temas (Styles) do Seaborn
+O Seaborn permite que você defina um "tema" no início do seu código com uma única linha: sns.set_theme(). Isso
+mudará o estilo de todos os gráficos que você criar depois.
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+# --- Início do Código da Aula ---
+dados_investimento = pd.DataFrame({
+'anos_de_experiencia': [1, 2, 3, 4, 5, 8, 10, 12, 15, 20],
+'salario_anual_milhar': [45, 50, 60, 65, 70, 90, 100, 110, 120, 150]
+})
+# --- NOVO: Definindo o estilo GERAL ---
+# Isso mudará a aparência de todos os gráficos seguintes
+sns.set_theme(style="whitegrid", palette="viridis")
+# 'palette' muda a sequência de cores padrão
+# --- Código da Aula para o gráfico de dispersão ---
+plt.figure(figsize=(10,6))
+sns.scatterplot(x='anos_de_experiencia', y='salario_anual_milhar', data=dados_investimento, s=100)
+plt.title('Relação entre Experiência e Salário (Estilo "whitegrid")')
+plt.xlabel('Anos de Experiência')
+plt.ylabel('Salário Anual (em milhares de R$)')
+# plt.grid(True) # Não é mais necessário, o estilo "whitegrid" já inclui a grade
+plt.show()
+Os estilos mais comuns são:
+ darkgrid (o padrão)
+ whitegrid (fundo branco com grades)
+ dark (fundo escuro)
+ white (fundo branco)
+Paletas Sequenciais (Boas para mostrar intensidade):
+ "viridis" (o que você usou)
+ "mako" (azul escuro para verde claro)
+ "flare" (roxo escuro para amarelo)
+ "crest" (verde escuro para verde claro)
+ "Blues" (azul claro para escuro)
+ "Greens"
+ "Reds"
+Paletas Qualitativas (Boas para categorias distintas):
+ "deep"
+ "muted"
+ "pastel"
+ "bright"
+ "dark"
+ "colorblind" (uma paleta otimizada para daltonismo)
+
+2. A Forma Avançada: Customização Detalhada
+Você pode alterar cada elemento individualmente. Isso pode ser feito de duas formas:
+1. Passando argumentos diretamente para a função do Seaborn (ex: color, marker, s).
+2. Usando funções do plt (Matplotlib) depois de criar o gráfico Seaborn para ajustar detalhes finos,
+como tamanho da fonte do título.
+Exemplo (Estilizando o Gráfico de Regressão em detalhes):
+# Definindo um tema base
+sns.set_theme(style="darkgrid")
+# --- Código da Aula para o gráfico de regressão
+plt.figure(figsize=(10,6))
+# --- Customização DENTRO do regplot ---
+sns.regplot(
+x='anos_de_experiencia',
+y='salario_anual_milhar',
+data=dados_investimento,
+# Estiliza os pontos (scatter)
+scatter_kws={
+'s': 150, # Tamanho do ponto (s=100)
+'color': 'darkblue', # Cor dos pontos
+'marker': 'X', # Formato do marcador
+'edgecolor': 'white' # Cor da borda do marcador
+},
+# Estiliza a linha de regressão
+line_kws={
+'color': 'cyan', # Cor da linha
+'linewidth': 4 # Espessura da linha
+}
+)
+# --- Customização FINA com Matplotlib ---
+plt.title('Linha de Regressão (Estilo Avançado)', fontsize=20, fontweight='bold')
+plt.xlabel('Anos de Experiência no Mercado', fontsize=14)
+plt.ylabel('Expectativa Salarial (em R$ mil)', fontsize=14)
+plt.grid(True, linestyle='--', alpha=0.5) # Deixa a grade tracejada e semitransparente
+plt.show()
+
+Nomes de Cores Simples (em inglês):
+ 'blue'
+ 'green'
+ 'red'
+ 'orange'
+ 'purple'
+ 'cyan'
+ 'magenta'
+ 'black'
+ 'gray'
+Códigos Hexadecimais (para cores exatas):
+ '#FF5733' (um laranja-avermelhado)
+ '#34A853' (um verde)
+ '#4285F4' (um azul)
+ '#A569BD' (um roxo)
+Gráfico de Linha: Perfeito para os dados_investimento que já temos, pois mostra uma tendência ao
+longo de uma variável contínua (anos).
+Gráfico de Coluna (Bar chart): Precisamos de dados categóricos para isso. Vou criar um novo DataFrame
+de exemplo (dados_departamento).
+Gráfico de Pizza (Pie chart): Precisamos de dados que representem partes de um todo (porcentagens).
+Vou criar um terceiro conjunto de dados (dados_portfolio).
+
+# --- BLOCO 1: IMPORTAÇÃO DAS BIBLIOTECAS ---
+# pandas (pd): Para criar e gerenciar nossas tabelas de dados (DataFrames).
+import pandas as pd
+# matplotlib.pyplot (plt): A biblioteca "mãe" para desenhar, configurar e exibir os gráficos.
+import matplotlib.pyplot as plt
+# seaborn (sns): Construído sobre o Matplotlib, facilita criar gráficos estatísticos complexos e bonitos.
+import seaborn as sns
+print("Bibliotecas importadas com sucesso.")
+# --- BLOCO 2: CONFIGURAÇÃO GLOBAL DO ESTILO (TEMA) ---
+# Esta linha define um estilo padrão para TODOS os gráficos que serão criados.
+# style="whitegrid": Define um fundo branco com linhas de grade (ótimo para clareza).
+# palette="deep": Define uma paleta de cores padrão rica e moderna.
+sns.set_theme(style="whitegrid", palette="deep")
+print("Tema padrão 'whitegrid' definido.")
+# --- BLOCO 3: DEFINIÇÃO DOS CONJUNTOS DE DADOS ---
+# DADO 1: Para o Gráfico de Linha.
+dados_investimento = pd.DataFrame({
+'anos_de_experiencia': [1, 2, 3, 4, 5, 8, 10, 12, 15, 20],
+'salario_anual_milhar': [45, 50, 60, 65, 70, 90, 100, 110, 120, 150]
+})
+# DADO 2: Para o Gráfico de Colunas (Comparação entre categorias).
+dados_departamento = pd.DataFrame({
+'departamento': ['TI', 'Recursos Humanos', 'Vendas', 'Marketing'],
+'funcionarios': [80, 35, 120, 50]
+})
+# DADO 3: Para o Gráfico de Pizza (Proporções de um todo).
+dados_portfolio = {
+'tipo_investimento': ['Ações', 'Renda Fixa', 'Imóveis', 'Caixa'],
+'valor_percentual': [45, 25, 20, 10]
+}
+print("Todos os conjuntos de dados foram criados.")
+print("--- Iniciando a geração de gráficos (feche uma janela para ver a próxima) ---")
+
+# ==============================================================================
+# --- GRÁFICO 1: GRÁFICO DE LINHA (Tendência Sequencial) ---
+# Objetivo: Mostrar a progressão dos dados como uma sequência.
+# ==============================================================================
+print("Exibindo Gráfico 4: Linha...")
+# 1. Cria uma nova tela.
+plt.figure(figsize=(10, 6))
+# 2. Desenha o gráfico de linha.
+sns.lineplot(
+data=dados_investimento,
+x='anos_de_experiencia',
+y='salario_anual_milhar',
+marker='o', # Adiciona um marcador de "bolinha" em cada ponto
+linewidth=2.5 # Aumenta a espessura da linha
+)
+# 3. Adiciona títulos e rótulos.
+plt.title('Progressão Salarial por Experiência', fontsize=16, fontweight='bold')
+plt.xlabel('Anos de Experiência', fontsize=12)
+plt.ylabel('Salário Anual (em R$ mil)', fontsize=12)
+# 4. Exibe o gráfico.
+plt.show()
+
+# ==============================================================================
+# --- GRÁFICO 2: GRÁFICO DE COLUNAS (Comparação de Categorias) ---
+# Objetivo: Comparar valores numéricos entre categorias distintas.
+# ==============================================================================
+print("Exibindo Gráfico 5: Colunas (Bar Chart)...")
+# 1. Cria uma nova tela.
+plt.figure(figsize=(10, 6))
+# 2. Desenha o gráfico de colunas (ou barras).
+# Ele usará a paleta "deep" que definimos globalmente.
+sns.barplot(
+data=dados_departamento,
+x='departamento', # As categorias no eixo X
+y='funcionarios' # Os valores (altura das colunas) no eixo Y
+)
+# 3. Adiciona títulos e rótulos.
+plt.title('Número de Funcionários por Departamento', fontsize=16, fontweight='bold')
+plt.xlabel('Departamento', fontsize=12)
+plt.ylabel('Total de Funcionários', fontsize=12)
+# 4. Exibe o gráfico.
+plt.show()
+
+# ==============================================================================
+# --- GRÁFICO 3: GRÁFICO DE PIZZA (Proporções de um Todo) ---
+# Objetivo: Mostrar como um valor total é dividido em partes.
+# Nota: Seaborn não tem .pie(), por isso usamos o Matplotlib (plt) diretamente.
+# ==============================================================================
+print("Exibindo Gráfico 6: Pizza (Pie Chart)...")
+# 1. Prepara os dados para o plt.pie() (ele prefere listas)
+labels = dados_portfolio['tipo_investimento']
+sizes = dados_portfolio['valor_percentual']
+# 2. Pega 4 cores da nossa paleta "deep" do Seaborn para manter a consistência
+colors = sns.color_palette('deep')[0:4]
+# 3. "Explode" (destaca) a primeira fatia (Ações)
+explode = (0.1, 0, 0, 0)
+# 4. Cria a tela (quadrada é melhor para pizza)
+plt.figure(figsize=(8, 8))
+# 5. Desenha o gráfico de pizza.
+plt.pie(
+sizes, # Os valores (tamanho de cada fatia)
+explode=explode, # O quanto cada fatia "sai" do centro
+labels=labels, # Os rótulos de cada fatia
+colors=colors, # As cores que pegamos do Seaborn
+autopct='%1.1f%%', # Formato para exibir a porcentagem (ex: "45.0%")
+shadow=True, # Adiciona uma sombra
+startangle=90 # Gira o gráfico para começar a primeira fatia no topo
+)
+# 6. Adiciona o título.
+plt.title('Composição da Carteira de Investimentos', fontsize=16, fontweight='bold')
+# 7. Garante que o gráfico seja um círculo perfeito.
+plt.axis('equal')
+# 8. Exibe o gráfico.
+plt.show()

@@ -1,0 +1,26 @@
+1. R: Analisar salários com base no cargo/área
+
+2. R: df_Folha_pagamento
+	df_funcionario
+3. R: pd_marge
+
+4. R:print(f"A média salarial é de R${df_folha['Salario'].mean():.2f}")
+
+5. R: a mediana é o centro real do data frame
+ea media é a soma de tudo divido pelo resultado
+
+6. R: serve para mostrar o quão espalhados do centro 
+
+7. R:Com o "Outlier" o gráfico fica menos preciso
+
+8. R:  Anos_experiencia, Custo_total_anual
+
+9. R:TI_salariomaior = df_merged['Setor'] == 'TI'; df_merged['Salario'] > 5635.00
+
+10. R:Sabr quantos funcionários etão em cada setor
+
+11. R:
+
+
+
+ 
